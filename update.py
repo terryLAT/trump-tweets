@@ -19,9 +19,9 @@ def main(file_name="tweets.json"):
     json_list = []
     for year in year_list:
         r = requests.get(base_url.format(year))
-        json = r.json()
-        json.reverse()
-        json_list.append(json)
+        data = r.json()
+        data.reverse()
+        json_list.append(data)
     flat_list = [item for sublist in json_list for item in sublist]
     print(f"{len(flat_list)} tweets found")
 
