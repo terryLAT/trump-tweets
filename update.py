@@ -15,7 +15,7 @@ def main(file_name="tweets.json"):
     """
     # Scrape
     base_url = 'http://www.trumptwitterarchive.com/data/realdonaldtrump/{}.json'
-    years = range(2009, datetime.date.today().year)
+    years = range(2009, datetime.date.today().year + 1)
     json_list = [requests.get(base_url.format(year)).json() for year in years]
     flat_list = [item for sublist in json_list for item in sublist]
     print(f"{len(flat_list)} tweets found")
