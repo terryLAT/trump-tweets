@@ -1,2 +1,1 @@
-web: gunicorn update.py
-
+web: python update.py
