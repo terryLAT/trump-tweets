@@ -36,18 +36,18 @@ def main(file_name='bogut.json'):
     print(f"Wrote out gzipped JSON file to {file_name}")
 
     # Upload
-    # s3 = boto3.resource('s3')
-    # bucket = s3.Bucket(os.getenv("AWS_BUCKET_NAME"))
-    # bucket.upload_file(
-    #     file_name,
-    #     file_name,
-    #     ExtraArgs={
-    #         'ACL':'public-read',
-    #         'ContentEncoding': 'gzip',
-    #         'ContentType': "application/json"
-    #     }
-    # )
-    # print("Uploaded tweets.json to S3 bucket")
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket('bogut-minutes')
+    bucket.upload_file(
+        file_name,
+        file_name,
+        ExtraArgs={
+            'ACL':'public-read',
+#            'ContentEncoding': 'gzip',
+            'ContentType': "application/json"
+        }
+    )
+    print("Uploaded tweets.json to S3 bucket")
 
 
 if __name__ == '__main__':
