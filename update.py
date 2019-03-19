@@ -10,9 +10,11 @@ from bs4 import BeautifulSoup
 
 def main(file_name='bogut.json'):
     """
-    Downloads all @realDonaldTrump tweets stored at trumptwitterarchive.com.
+    Downloads recent Bogut stats and then...
 
     Uploads them as a single JSON to S3.
+    
+    Currently deployed to Heroku on a scheduler, runnining hourly.
     """
     # Collect and parse page
     page = requests.get('https://www.basketball-reference.com/players/b/bogutan01.html')
@@ -34,6 +36,7 @@ def main(file_name='bogut.json'):
         json.dump(data, outfile)
 
     print(f"Wrote out gzipped JSON file to {file_name}")
+
 
     # Upload
     # s3 = boto3.resource('s3')
