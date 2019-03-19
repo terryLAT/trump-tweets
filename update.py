@@ -17,7 +17,7 @@ def main(file_name='bogut.json'):
     # Collect and parse page
     page = requests.get('https://www.basketball-reference.com/players/b/bogutan01.html')
     soup = BeautifulSoup(page.text, 'html.parser')
-    per_game_stats = soup.find(id='per_game.2018')
+    per_game_stats = soup.find(id='per_game.2019')
     flat_list = [item for sublist in per_game_stats for item in sublist]
     games_played = flat_list[5]
     games_started = flat_list[6]
