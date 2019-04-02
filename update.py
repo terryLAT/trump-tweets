@@ -10,9 +10,11 @@ from bs4 import BeautifulSoup
 
 def main(file_name='bogut.json'):
     """
-    Downloads all @realDonaldTrump tweets stored at trumptwitterarchive.com.
+    Downloads all Bogut stats we want from...
     https://www.basketball-reference.com/players/b/bogutan01/gamelog/2019/  
     Uploads them as a single JSON to S3.
+    
+    Currently deployed to Heroku on a scheduler, runnining hourly.
     """
     # Collect and parse page
     page = requests.get('https://www.basketball-reference.com/players/b/bogutan01.html')
@@ -37,9 +39,6 @@ def main(file_name='bogut.json'):
         even_cleaner[spec_iter] = item.get_text(separator=',')
         spec_iter += 1
 
-    print(even_cleaner)
-
-
     data = {}
     data['games_played'] = games_played
     data['games_started'] = games_started
@@ -53,6 +52,7 @@ def main(file_name='bogut.json'):
         json.dump(data, outfile)
 
     print(f"Wrote out gzipped JSON file to {file_name}")
+
 
     # Upload
     s3 = boto3.resource('s3')
