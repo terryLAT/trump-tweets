@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 def main(file_name='bogut.json'):
     """
     Downloads all @realDonaldTrump tweets stored at trumptwitterarchive.com.
-
+    https://www.basketball-reference.com/players/b/bogutan01/gamelog/2019/  
     Uploads them as a single JSON to S3.
     """
     # Collect and parse page
@@ -23,13 +23,32 @@ def main(file_name='bogut.json'):
     games_started = flat_list[6]
     avg_mins = flat_list[7]
 
+    #adding more data from second page
+    page_two = requests.get('https://www.basketball-reference.com/players/b/bogutan01/gamelog/2019/')
+    soup_two = BeautifulSoup(page_two.text, 'html.parser')
+    detailed_stats = soup_two.find(id='pgl_basic')
+    flat_list_two = [item for sublist in detailed_stats for item in sublist]
+
+    #remove column headers and newlines
+    cleaned = flat_list_two[38:]
+    even_cleaner = cleaned[0::2]
+    spec_iter = 0
+    for item in even_cleaner:
+        even_cleaner[spec_iter] = item.get_text(separator=',')
+        spec_iter += 1
+
+    print(even_cleaner)
+
+
     data = {}
     data['games_played'] = games_played
     data['games_started'] = games_started
     data['avg_mins'] = avg_mins
-    #json_data = json.dumps(data)
+    data['game_data'] = even_cleaner
 
-    # Write
+    json_data = json.dumps(data)
+
+    #Write
     with open(file_name, 'w') as outfile:
         json.dump(data, outfile)
 
